@@ -17,7 +17,7 @@ public class Account {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, unique = true)
     private String accountNo;
 
     @DatabaseField(canBeNull = false)

@@ -1,6 +1,7 @@
 package com.imaginarycompany.service;
 
 import com.imaginarycompany.model.Account;
+import com.imaginarycompany.model.dto.AccountDto;
 import com.imaginarycompany.util.JsonUtil;
 import com.j256.ormlite.dao.Dao;
 
@@ -14,13 +15,38 @@ public class AccountService {
     public AccountService() throws SQLException {
     }
 
-    public String countAccounts() throws SQLException {
-        return String.valueOf(accountDao.countOf());
-    }
-
     public String createAccount() throws SQLException {
         Account accountCreated = accountDao.createIfNotExists(new Account());
         return jsonUtil.toJson(accountCreated);
     }
 
+    public String getAccount(String accountNo) throws SQLException {
+        Account accountCreated = findByAccountNo(accountNo);
+        return jsonUtil.toJson(accountCreated);
+    }
+
+    public String depositMoney(AccountDto accountDto) throws SQLException {
+        Account account = findByAccountNo(accountDto.getAccountNo());
+        account.setBalance(account.getBalance().add(accountDto.getBalance()));
+        updateAccount(account);
+        return jsonUtil.toJson(account);
+    }
+
+    Account findByAccountNo(String accountNo) throws SQLException {
+        return accountDao.queryBuilder()
+                .where()
+                .eq("accountNo", accountNo)
+                .queryForFirst();
+    }
+
+    String withdrawMoney(AccountDto accountDto) throws SQLException {
+        Account account = findByAccountNo(accountDto.getAccountNo());
+        account.setBalance(account.getBalance().subtract(accountDto.getBalance()));
+        updateAccount(account);
+        return jsonUtil.toJson(account);
+    }
+
+    private void updateAccount(Account account) throws SQLException {
+        accountDao.update(account);
+    }
 }

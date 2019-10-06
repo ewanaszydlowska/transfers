@@ -14,9 +14,8 @@ import java.sql.SQLException;
 public class DatabaseService {
 
     private static DatabaseService databaseService;
-
     private final static String DATABASE_URL = "jdbc:h2:mem:imaginarycompany";
-    private final ConnectionSource connectionSource;
+    final ConnectionSource connectionSource;
 
     private DatabaseService() throws SQLException {
         this.connectionSource = new JdbcPooledConnectionSource(DATABASE_URL);

@@ -26,6 +26,10 @@ public class Transfer {
     @DatabaseField(canBeNull = false)
     private Date sent;
 
-    @DatabaseField(canBeNull = false)
-    private Date delivered;
+    public Transfer(Account from, Account to, BigDecimal amount) {
+        this.from = from;
+        this.to = to;
+        this.amount = amount;
+        sent = new Date();
+    }
 }

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 public class JsonUtil<T> {
 
-    private final Gson gson = new Gson();
+    private Gson gson = new Gson();
     private Class<T> type;
 
     public String toJson(T obj) {
