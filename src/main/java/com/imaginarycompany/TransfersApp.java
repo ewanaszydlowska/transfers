@@ -31,7 +31,7 @@ public class TransfersApp {
         app.get("/account", createAccount);
         app.get("/account/:" + ACCOUNT_NO, getAccount);
         app.post("/account/deposit", depositMoney);
-        app.post("/account/withdraw", withdrawMoney);
+        app.post("/account/withdrawal", withdrawalMoney);
 
     }
 
