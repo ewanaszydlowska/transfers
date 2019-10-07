@@ -1,5 +1,6 @@
 package com.imaginarycompany.service;
 
+import com.google.gson.Gson;
 import com.imaginarycompany.model.Account;
 import com.imaginarycompany.model.Transfer;
 import com.imaginarycompany.model.dto.AccountDto;
@@ -15,6 +16,7 @@ public class TransferService {
 
     private Dao<Transfer, Long> transferDao = DatabaseService.getInstance().createTransferDao();
     private JsonUtil<Transfer> jsonMapper = new JsonUtil<>();
+    private Gson gson = new Gson();
     private AccountService accountService = new AccountService();
 
     public TransferService() throws SQLException {
@@ -24,15 +26,16 @@ public class TransferService {
 
         Transfer transfer = TransactionManager.callInTransaction(DatabaseService.getInstance().connectionSource,
                 () -> {
-                    Account accountFrom = accountService.findByAccountNo(body.getFromAccountNo());
-                    Account accountTo = accountService.findByAccountNo(body.getToAccountNo());
-
                     BigDecimal amount = body.getAmount();
 
-                    accountService.depositMoney(new AccountDto(body.getToAccountNo(), amount));
-                    accountService.withdrawMoney(new AccountDto(accountFrom.getAccountNo(), amount));
+                    String accountFromString = accountService.withdrawalMoney(new AccountDto(body.getFromAccountNo(), amount));
+                    String accountToString = accountService.depositMoney(new AccountDto(body.getToAccountNo(), amount));
 
-                    return transferDao.createIfNotExists(new Transfer(accountFrom, accountTo, amount));
+                    return transferDao.createIfNotExists(
+                            new Transfer(
+                                    gson.fromJson(accountFromString, Account.class),
+                                    gson.fromJson(accountToString, Account.class),
+                                    amount));
                 });
 
         return jsonMapper.toJson(transfer);

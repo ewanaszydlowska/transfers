@@ -2,6 +2,7 @@ package com.imaginarycompany.model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "transfers")
 @NoArgsConstructor
+@Getter
 public class Transfer {
 
     @DatabaseField(generatedId = true)

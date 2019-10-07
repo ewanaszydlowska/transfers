@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import static com.imaginarycompany.controller.AccountController.*;
-import static com.imaginarycompany.controller.TransferController.*;
+import static com.imaginarycompany.controller.TransferController.transfer;
+import static com.imaginarycompany.service.AccountService.ACCOUNT_NO;
 
 @AllArgsConstructor
 public class TransfersApp {
@@ -29,7 +29,7 @@ public class TransfersApp {
 
     private static void startAccountRoutes(Javalin app) {
         app.get("/account", createAccount);
-        app.get("/account/:accountNo", getAccount);
+        app.get("/account/:" + ACCOUNT_NO, getAccount);
         app.post("/account/deposit", depositMoney);
         app.post("/account/withdraw", withdrawMoney);
 

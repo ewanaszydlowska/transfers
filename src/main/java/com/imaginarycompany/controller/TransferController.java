@@ -24,6 +24,9 @@ public class TransferController {
         }
     }
 
+    public TransferController() {
+    }
+
     public static Handler transfer = ctx -> ctx.result(transferMoney(ctx.bodyAsClass(TransferDto.class)));
 
     private static CompletableFuture<String> transferMoney(TransferDto body) {

@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 public class AccountController {
 
     private static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
     private static AccountService accountService;
 
     static {
@@ -49,7 +48,7 @@ public class AccountController {
 
     private static CompletableFuture<String> getWithdrawMoneyFuture(AccountDto body) {
         CompletableFuture<String> future = new CompletableFuture<>();
-        executorService.schedule(() -> future.complete(accountService.createAccount()), 100L, TimeUnit.MILLISECONDS);
+        executorService.schedule(() -> future.complete(accountService.withdrawalMoney(body)), 100L, TimeUnit.MILLISECONDS);
         return future;
     }
 

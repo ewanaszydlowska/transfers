@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 public class AccountService {
 
+    public static final String ACCOUNT_NO = "accountNo";
+
     private Dao<Account, Long> accountDao = DatabaseService.getInstance().createAccountDao();
     private JsonUtil<Account> jsonUtil = new JsonUtil<>();
 
@@ -32,18 +34,18 @@ public class AccountService {
         return jsonUtil.toJson(account);
     }
 
-    Account findByAccountNo(String accountNo) throws SQLException {
-        return accountDao.queryBuilder()
-                .where()
-                .eq("accountNo", accountNo)
-                .queryForFirst();
-    }
-
-    String withdrawMoney(AccountDto accountDto) throws SQLException {
+    public String withdrawalMoney(AccountDto accountDto) throws SQLException {
         Account account = findByAccountNo(accountDto.getAccountNo());
         account.setBalance(account.getBalance().subtract(accountDto.getBalance()));
         updateAccount(account);
         return jsonUtil.toJson(account);
+    }
+
+    private Account findByAccountNo(String accountNo) throws SQLException {
+        return accountDao.queryBuilder()
+                .where()
+                .eq(ACCOUNT_NO, accountNo)
+                .queryForFirst();
     }
 
     private void updateAccount(Account account) throws SQLException {

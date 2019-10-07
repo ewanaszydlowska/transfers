@@ -13,13 +13,12 @@ import java.sql.SQLException;
 
 public class DatabaseService {
 
-    private static DatabaseService databaseService;
     private final static String DATABASE_URL = "jdbc:h2:mem:imaginarycompany";
-    final ConnectionSource connectionSource;
+    private static DatabaseService databaseService;
 
-    private DatabaseService() throws SQLException {
-        this.connectionSource = new JdbcPooledConnectionSource(DATABASE_URL);
-    }
+    final ConnectionSource connectionSource = new JdbcPooledConnectionSource(DATABASE_URL);
+
+    private DatabaseService() throws SQLException {}
 
     public synchronized static DatabaseService getInstance() throws SQLException {
         if (databaseService == null) {
